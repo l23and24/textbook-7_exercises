@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вправа №28 (3): Одиниці тиску</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .hint-tooltip {
+            visibility: hidden;
+            transition: opacity 0.3s;
+            opacity: 0;
+        }
+        .hint-container:hover .hint-tooltip, .hint-container:focus-within .hint-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        /* Збільшені елементи для інтерактивної дошки */
+        select {
+            font-size: 1.25rem !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+
+    <div id="app" class="bg-white p-8 md:p-12 rounded-[2rem] shadow-2xl w-full mx-auto">
+        <header class="text-center mb-12 border-b pb-8">
+            <h1 class="text-4xl md:text-5xl font-black text-blue-900 mb-4 tracking-tight">Вправа №28 (3)</h1>
+            <p class="text-xl md:text-2xl text-gray-500 font-medium">Заповніть рівності, обравши правильні значення тиску в Паскалях</p>
+        </header>
+
+        <div id="quiz-container" class="space-y-4">
+            <!-- Завдання генеруються тут -->
+        </div>
+
+        <div class="mt-16 flex flex-col items-center border-t pt-10">
+            <button onclick="checkAll()" id="check-btn" class="bg-blue-600 hover:bg-blue-700 text-white text-2xl font-black py-6 px-16 rounded-3xl transition-all transform hover:scale-105 active:scale-95 shadow-2xl shadow-blue-200">
+                ПЕРЕВІРИТИ ВІДПОВІДІ
+            </button>
+            
+            <div id="final-result" class="hidden mt-10 p-8 rounded-3xl text-center w-full max-w-2xl bg-gray-50 border-4 border-dashed border-gray-200">
+                <p id="result-text" class="text-3xl font-black"></p>
+                <button onclick="location.reload()" class="mt-6 text-blue-600 text-xl font-bold hover:underline decoration-4">Спробувати знову</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            { id: 1, val: "2 кПа", options: ["20 Па", "200 Па", "2000 Па", "0,002 Па"], correct: "2000 Па", hint: "Префікс 'к' (кіло) означає 10³. Помножте числове значення на 1000." },
+            { id: 2, val: "4 гПа", options: ["40 Па", "400 Па", "4000 Па", "0,4 Па"], correct: "400 Па", hint: "Префікс 'г' (гекто) означає 10². Помножте числове значення на 100." },
+            { id: 3, val: "0,3 МПа", options: ["300 Па", "30 000 Па", "300 000 Па", "3 000 000 Па"], correct: "300 000 Па", hint: "Префікс 'М' (мега) означає 10⁶. Помножте значення на 1 000 000." },
+            { id: 4, val: "0,35 кН/м²", options: ["0,35 Па", "35 Па", "350 Па", "3500 Па"], correct: "350 Па", hint: "1 Н/м² — це 1 Па. Врахуйте префікс 'к' (кіло) — помножте на 1000." },
+            { id: 5, val: "1,5 Н/см²", options: ["1,5 Па", "150 Па", "15 000 Па", "0,00015 Па"], correct: "15 000 Па", hint: "В 1 м² є 10 000 см². Помножте число на 10 000, щоб отримати Паскалі." },
+            { id: 6, val: "36 мН/см²", options: ["360 Па", "36 Па", "3,6 Па", "3600 Па"], correct: "360 Па", hint: "Переведіть мН в Н (поділіть на 1000), а потім помножте на 10 000 (см² у м²)." }
+        ];
+
+        function initQuiz() {
+            const container = document.getElementById('quiz-container');
+            
+            quizData.forEach((item, index) => {
+                const row = document.createElement('div');
+                row.className = "flex flex-col lg:flex-row items-center justify-between p-6 bg-gray-50 rounded-[2rem] border-2 border-transparent transition-all hover:bg-white hover:border-blue-100 hover:shadow-md gap-6";
+                
+                row.innerHTML = `
+                    <div class="flex items-center gap-6 w-full lg:w-1/3">
+                        <span class="flex-shrink-0 flex items-center justify-center w-12 h-12 bg-blue-600 text-white rounded-2xl font-black text-xl shadow-lg">${index + 1}</span>
+                        <span class="text-3xl font-bold text-gray-800">${item.val}</span>
+                        <span class="text-4xl text-gray-300 font-black">=</span>
+                    </div>
+
+                    <div class="flex items-center gap-4 w-full lg:w-2/3">
+                        <select id="select-${item.id}" class="flex-grow p-5 bg-white border-4 border-gray-200 rounded-2xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 focus:outline-none text-gray-800 font-bold appearance-none cursor-pointer shadow-sm transition-all">
+                            <option value="" disabled selected>Оберіть результат...</option>
+                            ${item.options.sort(() => Math.random() - 0.5).map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+                        </select>
+                        
+                        <div class="relative hint-container">
+                            <button class="w-16 h-16 flex items-center justify-center bg-yellow-100 text-yellow-600 rounded-2xl hover:bg-yellow-200 hover:scale-110 transition-all focus:outline-none shadow-md" title="Підказка від Сонечка">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="5"></circle>
+                                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                                    <path d="M9 13s.5 1 3 1 3-1 3-1" stroke-width="1.5"></path>
+                                </svg>
+                            </button>
+                            <div class="hint-tooltip absolute bottom-full left-1/2 transform -translate-x-1/2 mb-5 w-80 p-5 bg-amber-50 text-amber-900 border-4 border-amber-200 text-lg rounded-[1.5rem] shadow-2xl z-20 pointer-events-none">
+                                <p class="font-black mb-2 text-amber-600 flex items-center gap-2">
+                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12z"/></svg>
+                                    Порада:
+                                </p>
+                                <p class="leading-relaxed font-medium">${item.hint}</p>
+                                <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-[12px] border-transparent border-t-amber-200"></div>
+                            </div>
+                        </div>
+                        
+                        <div id="status-${item.id}" class="w-10 h-10 flex-shrink-0"></div>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function checkAll() {
+            let correctCount = 0;
+            let total = quizData.length;
+
+            quizData.forEach(item => {
+                const select = document.getElementById(`select-${item.id}`);
+                const status = document.getElementById(`status-${item.id}`);
+                
+                if (select.value === item.correct) {
+                    correctCount++;
+                    status.innerHTML = `<svg class="text-green-500 w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>`;
+                    select.classList.remove('border-red-300', 'bg-red-50');
+                    select.classList.add('border-green-400', 'bg-green-50');
+                } else {
+                    status.innerHTML = `<svg class="text-red-500 w-10 h-10" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>`;
+                    select.classList.remove('border-green-400', 'bg-green-50');
+                    select.classList.add('border-red-300', 'bg-red-50');
+                }
+            });
+
+            const resultDiv = document.getElementById('final-result');
+            const resultText = document.getElementById('result-text');
+            resultDiv.classList.remove('hidden');
+            
+            if (correctCount === total) {
+                resultText.className = "text-4xl font-black text-green-600";
+                resultText.innerText = `ВІДМІННО! ${correctCount} з ${total} 🎉`;
+            } else {
+                resultText.className = "text-4xl font-black text-orange-600";
+                resultText.innerText = `Результат: ${correctCount} з ${total}. Спробуйте ще раз!`;
+            }
+            
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        window.onload = initQuiz;
+    </script>
+</body>
+</html>
