@@ -24,18 +24,27 @@
 <body class="min-h-screen py-10 px-4 md:px-10">
 
     <header class="max-w-4xl mx-auto text-center mb-12">
-        <h1 class="text-4xl font-extrabold text-blue-800 mb-2">Фізика 8 клас</h1>
+        <h1 class="text-4xl font-extrabold text-blue-800 mb-2">Фізика 7 клас</h1>
         <p class="text-xl text-gray-600">Вправи для самостійної роботи й самостійного опрацювання (1 — 36)</p>
         <div class="h-1 w-32 bg-blue-500 mx-auto mt-4 rounded-full"></div>
     </header>
 
-    <main class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <!-- Генерація карток вправ -->
-        <script>
+    <main id="main-container" class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Картки вправ будуть згенеровані тут -->
+    </main>
+
+    <footer class="max-w-4xl mx-auto text-center mt-20 text-gray-500 text-sm border-t border-gray-200 pt-8 mb-10">
+        <p class="font-medium text-gray-700 text-base">Підручник з фізики для 7 класу</p>
+        <p class="mt-2 text-gray-400">&copy; 2026 @ Онлайн-кабінет 229</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
             const exercisesCount = 36; 
             const subExercisesCount = 10; 
+            const mainContainer = document.getElementById('main-container');
 
-            const mainContainer = document.querySelector('main');
+            if (!mainContainer) return;
 
             for (let i = 1; i <= exercisesCount; i++) {
                 const card = document.createElement('div');
@@ -43,11 +52,13 @@
                 
                 let subLinks = '';
                 for (let j = 1; j <= subExercisesCount; j++) {
-                    // Формуємо назву файлу: наприклад 1.1.html, 1.2.html... 42.10.html
+                    // Формуємо шлях: наприклад 1.1.html
                     const fileName = `${i}.${j}.html`;
                     
                     subLinks += `
-                        <a href="${fileName}" title="Відкрити вправу ${i}.${j}" class="inline-flex items-center justify-center w-9 h-9 m-1 text-sm font-semibold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-600 hover:text-white transition-all border border-blue-100">
+                        <a href="${fileName}" 
+                           title="Відкрити вправу ${i}.${j}" 
+                           class="inline-flex items-center justify-center w-9 h-9 m-1 text-sm font-semibold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-600 hover:text-white transition-all border border-blue-100">
                             ${j}
                         </a>
                     `;
@@ -66,13 +77,8 @@
                 `;
                 mainContainer.appendChild(card);
             }
-        </script>
-    </main>
-
-    <footer class="max-w-4xl mx-auto text-center mt-20 text-gray-500 text-sm border-t border-gray-200 pt-8 mb-10">
-        <p class="font-medium text-gray-700 text-base">Підручник з фізики для 7 класу</p>
-        <p class="mt-2 text-gray-400">&copy; 2026 @ Онлайн-кабінет 229</p>
-    </footer>
+        });
+    </script>
 
 </body>
 </html>
