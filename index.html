@@ -3,111 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Розв'язування задач</title>
+    <title>Фізика 7 клас - Вправи</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
+        body {
+            background-color: #f8fafc;
         }
-        .accordion-item.active .accordion-content {
-            max-height: 600px;
+        .exercise-card {
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .accordion-item.active .arrow-icon {
-            transform: rotate(180deg);
+        .exercise-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
-<body class="bg-gray-50 font-sans text-gray-900">
+<body class="min-h-screen py-10 px-4 md:px-10">
 
-    <!-- Header -->
-    <header class="bg-slate-800 text-white py-8 px-4 shadow-lg">
-        <div class="max-w-4xl mx-auto">
-            <h1 class="text-3xl font-bold mb-2">Розв'язування задач</h1>
-            <p class="text-slate-300">Структурований каталог матеріалів від 67 до 105</p>
-        </div>
+    <header class="max-w-4xl mx-auto text-center mb-12">
+        <h1 class="text-4xl font-extrabold text-blue-800 mb-2">Фізика 8 клас</h1>
+        <p class="text-xl text-gray-600">Вправи для самостійної роботи й самостійного опрацювання (1 — 42)</p>
+        <div class="h-1 w-32 bg-blue-500 mx-auto mt-4 rounded-full"></div>
     </header>
 
-    <!-- Main Content -->
-    <main class="max-w-4xl mx-auto py-10 px-4">
-        <div id="navigation-container" class="space-y-4">
-            <!-- Пункти меню будуть згенеровані тут -->
-        </div>
+    <main class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Генерація карток вправ -->
+        <script>
+            const exercisesCount = 42; 
+            const subExercisesCount = 10; 
+
+            const mainContainer = document.querySelector('main');
+
+            for (let i = 1; i <= exercisesCount; i++) {
+                const card = document.createElement('div');
+                card.className = 'exercise-card bg-white rounded-xl border border-gray-200 p-5 shadow-sm flex flex-col';
+                
+                let subLinks = '';
+                for (let j = 1; j <= subExercisesCount; j++) {
+                    // Формуємо назву файлу: наприклад 1.1.html, 1.2.html... 42.10.html
+                    const fileName = `${i}.${j}.html`;
+                    
+                    subLinks += `
+                        <a href="${fileName}" title="Відкрити вправу ${i}.${j}" class="inline-flex items-center justify-center w-9 h-9 m-1 text-sm font-semibold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-600 hover:text-white transition-all border border-blue-100">
+                            ${j}
+                        </a>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <h2 class="text-lg font-bold text-gray-800 mb-3 pb-2 border-b border-gray-100 flex items-center">
+                        <span class="bg-blue-600 text-white w-10 h-10 rounded-lg flex items-center justify-center mr-3 text-sm font-black shadow-md">
+                            ${i}
+                        </span>
+                        Вправа ${i}
+                    </h2>
+                    <div class="flex flex-wrap">
+                        ${subLinks}
+                    </div>
+                `;
+                mainContainer.appendChild(card);
+            }
+        </script>
     </main>
 
-    <!-- Footer -->
-    <footer class="text-center py-10 text-gray-500 text-sm">
-        <p>© 2024 GitHub Repository Index • Створено для зручної навігації</p>
+    <footer class="max-w-4xl mx-auto text-center mt-20 text-gray-500 text-sm border-t border-gray-200 pt-8 mb-10">
+        <p class="font-medium text-gray-700 text-base">Підручник з фізики для 8 класу</p>
+        <p class="mt-2 text-gray-400">&copy; 2024 GitHub Pages Project</p>
     </footer>
 
-    <script>
-        const container = document.getElementById('navigation-container');
-
-        /**
-         * Функція для створення блоку меню для кожного номера
-         * @param {number} number - Номер уроку
-         */
-        function createMenuItem(number) {
-            const item = document.createElement('div');
-            item.className = 'accordion-item bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden';
-            
-            // Масив підпунктів (задач)
-            // Оновлено шлях: тепер посилання веде на файл номер.підномер.html
-            const subItems = [
-                { label: `${number}.1`, link: `./${number}.1.html` },
-                { label: `${number}.2`, link: `./${number}.2.html` },
-                { label: `${number}.3`, link: `./${number}.3.html` },
-                { label: `${number}.4`, link: `./${number}.4.html` },
-                { label: `${number}.5`, link: `./${number}.5.html` }
-            ];
-
-            // Генеруємо HTML для списку задач
-            const subItemsHtml = subItems.map(sub => `
-                <a href="${sub.link}" class="block px-6 py-3 text-blue-600 hover:bg-blue-50 hover:text-blue-800 transition-colors border-b border-gray-50 last:border-0">
-                    📝 Перейти до задачі номер ${sub.label}
-                </a>
-            `).join('');
-
-            item.innerHTML = `
-                <button class="w-full px-6 py-4 flex items-center justify-between bg-white hover:bg-gray-50 transition-colors focus:outline-none" onclick="toggleAccordion(this)">
-                    <span class="text-lg font-semibold text-gray-700">Урок ${number}</span>
-                    <svg class="arrow-icon w-5 h-5 text-gray-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </button>
-                <div class="accordion-content bg-gray-50">
-                    <div class="py-2">
-                        ${subItemsHtml}
-                    </div>
-                </div>
-            `;
-            return item;
-        }
-
-        // Генерація списку уроків від 67 до 105
-        for (let i = 67; i <= 105; i++) {
-            container.appendChild(createMenuItem(i));
-        }
-
-        /**
-         * Функція для відкриття/закриття акордеона
-         * @param {HTMLElement} element - Кнопка акордеона
-         */
-        function toggleAccordion(element) {
-            const parent = element.parentElement;
-            const isActive = parent.classList.contains('active');
-            
-            // Закриваємо всі відкриті акордеони перед відкриттям нового
-            document.querySelectorAll('.accordion-item').forEach(item => {
-                item.classList.remove('active');
-            });
-
-            // Якщо натиснутий був неактивним, відкриваємо його
-            if (!isActive) {
-                parent.classList.add('active');
-            }
-        }
-    </script>
 </body>
 </html>
