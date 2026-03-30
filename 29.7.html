@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вправа № 29 (7)>
+    <title>Вправа № 29 (7): Вантаж на поршні</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         window.MathJax = {
@@ -38,7 +38,6 @@
             overflow-x: hidden;
         }
 
-
         .task-header {
             width: 95%;
             max-width: 1200px;
@@ -47,7 +46,6 @@
             padding-bottom: 15px;
         }
 
-
         .task-title {
             font-weight: bold;
             font-size: 28px;
@@ -55,13 +53,11 @@
             margin-bottom: 10px;
         }
 
-
         .task-text {
             font-size: 22px;
             color: #374151;
             text-align: justify;
         }
-
 
         .step {
             opacity: 0;
@@ -69,12 +65,10 @@
             transition: opacity 0.3s ease-in-out;
         }
 
-
         .step.visible {
             opacity: 1;
             visibility: visible;
         }
-
 
         .physics-table {
             display: table;
@@ -84,11 +78,9 @@
             margin: 0 auto;
         }
 
-
         .row {
             display: table-row;
         }
-
 
         .cell {
             display: table-cell;
@@ -96,25 +88,21 @@
             padding: 10px 15px;
         }
 
-
         .header-cell {
             font-weight: bold;
-            font-size: 24px;
+            font-size: 24px; 
             padding-bottom: 20px;
         }
-
 
         .v-line {
             border-right: 2.5px solid black;
         }
-
 
         .h-line-dano {
             border-top: 2.5px solid black;
             margin-top: 20px;
             padding-top: 20px;
         }
-
 
         .nav-arrow {
             position: fixed;
@@ -133,10 +121,8 @@
             transition: background 0.2s;
         }
 
-
         .nav-arrow.left { left: 5px; }
         .nav-arrow.right { right: 5px; }
-
 
         .answer-box {
             width: 95%;
@@ -148,11 +134,10 @@
             font-size: 24px;
             color: #1e40af;
         }
-       
+        
         .mjx-chtml {
             font-size: 100% !important;
         }
-
 
         @media (max-width: 768px) {
             body { font-size: 18px; }
@@ -167,10 +152,8 @@
 </head>
 <body>
 
-
     <div id="prev-btn" class="nav-arrow left"><span class="text-4xl text-gray-600">‹</span></div>
     <div id="next-btn" class="nav-arrow right"><span class="text-4xl text-gray-600">›</span></div>
-
 
     <!-- Шапка вправи -->
     <div class="task-header">
@@ -179,7 +162,6 @@
             У циліндрі під поршнем площею $80 \, \text{см}^2$ міститься вода. Вантаж якої маси потрібно покласти на поршень, щоб тиск води на дно циліндра зріс на $2 \, \text{кПа}$?
         </div>
     </div>
-
 
     <div id="main-container" class="physics-table">
         <div class="row">
@@ -195,7 +177,6 @@
                 </div>
             </div>
 
-
             <!-- Колонка 2: СІ -->
             <div class="cell v-line w-[15%] text-center">
                 <div class="header-cell">СІ</div>
@@ -204,7 +185,6 @@
                     <div class="step" id="step-4">$2000 \, \text{Па}$</div>
                 </div>
             </div>
-
 
             <!-- Колонка 3: Розв'язання -->
             <div class="cell v-line w-[30%]">
@@ -218,7 +198,6 @@
                     </div>
                 </div>
             </div>
-
 
             <!-- Колонка 4: Обчислення -->
             <div class="cell w-[30%]">
@@ -235,22 +214,18 @@
         </div>
     </div>
 
-
     <!-- Розгорнута відповідь -->
     <div class="step answer-box" id="step-12">
         Відповідь: На поршень потрібно покласти вантаж масою $1,6 \, \text{кг}$.
     </div>
 
-
     <div class="fixed bottom-4 right-6 text-gray-400 text-xs bg-white/80 p-1 rounded">
         Крок <span id="step-counter">0</span> / 12
     </div>
 
-
     <script>
         let currentStep = 0;
         const totalSteps = 12;
-
 
         function updateUI() {
             for (let i = 1; i <= totalSteps; i++) {
@@ -264,20 +239,16 @@
             document.getElementById('prev-btn').style.visibility = currentStep === 0 ? "hidden" : "visible";
             document.getElementById('next-btn').style.opacity = currentStep === totalSteps ? "0.3" : "1";
 
-
             if (window.MathJax && window.MathJax.typesetPromise) {
                 window.MathJax.typesetPromise();
             }
         }
 
-
         const next = () => { if (currentStep < totalSteps) { currentStep++; updateUI(); } };
         const prev = () => { if (currentStep > 0) { currentStep--; updateUI(); } };
 
-
         document.getElementById('next-btn').onclick = next;
         document.getElementById('prev-btn').onclick = prev;
-
 
         let touchstartX = 0;
         let touchendX = 0;
@@ -288,12 +259,10 @@
         document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; });
         document.addEventListener('touchend', e => { touchendX = e.changedTouches[0].screenX; handleGesture(); });
 
-
         document.addEventListener('keydown', (e) => {
             if (e.code === 'ArrowRight' || e.code === 'Space') next();
             if (e.code === 'ArrowLeft') prev();
         });
-
 
         window.onload = updateUI;
     </script>
