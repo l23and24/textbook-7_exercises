@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Вправа № 29 (7): Вантаж на поршні</title>
+    <!-- Підключення Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         window.MathJax = {
@@ -11,12 +13,15 @@
                 inlineMath: [['$', '$'], ['\\(', '\\)']],
                 displayMath: [['$$', '$$'], ['\\[', '\\]']]
             },
-            options: { enableMenu: false },
+            options: { 
+                enableMenu: false,
+                processHtmlClass: 'mathjax-process'
+            },
             startup: {
                 pageReady: () => {
                     return MathJax.startup.defaultPageReady().then(() => {
                         document.body.classList.add('mathjax-ready');
-                        if (typeof updateUI === 'function') updateUI();
+                        updateUI();
                     });
                 }
             }
@@ -121,6 +126,10 @@
             transition: background 0.2s;
         }
 
+        .nav-arrow:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
         .nav-arrow.left { left: 5px; }
         .nav-arrow.right { right: 5px; }
 
@@ -150,7 +159,7 @@
         }
     </style>
 </head>
-<body>
+<body class="mathjax-process">
 
     <div id="prev-btn" class="nav-arrow left"><span class="text-4xl text-gray-600">‹</span></div>
     <div id="next-btn" class="nav-arrow right"><span class="text-4xl text-gray-600">›</span></div>
@@ -239,7 +248,8 @@
             document.getElementById('prev-btn').style.visibility = currentStep === 0 ? "hidden" : "visible";
             document.getElementById('next-btn').style.opacity = currentStep === totalSteps ? "0.3" : "1";
 
-            if (window.MathJax && window.MathJax.typesetPromise) {
+            // Перевірка наявності MathJax перед рендерингом
+            if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
                 window.MathJax.typesetPromise();
             }
         }
@@ -256,14 +266,15 @@
             if (touchendX < touchstartX - 50) next();
             if (touchendX > touchstartX + 50) prev();
         }
-        document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; });
-        document.addEventListener('touchend', e => { touchendX = e.changedTouches[0].screenX; handleGesture(); });
+        document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; }, {passive: true});
+        document.addEventListener('touchend', e => { touchendX = e.changedTouches[0].screenX; handleGesture(); }, {passive: true});
 
         document.addEventListener('keydown', (e) => {
             if (e.code === 'ArrowRight' || e.code === 'Space') next();
             if (e.code === 'ArrowLeft') prev();
         });
 
+        // Гарантуємо завантаження UI після завантаження вікна
         window.onload = updateUI;
     </script>
 </body>
