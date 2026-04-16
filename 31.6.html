@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вправа 31 (6) - Навігація стрілками</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+        body {
+            font-family: 'Roboto', 'Times New Roman', serif;
+            background-color: #f8f9fa;
+            overflow-x: hidden;
+        }
+        .step-hidden {
+            opacity: 0;
+            transform: translateY(5px);
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        .step-visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .highlight {
+            background-color: #fef3c7;
+            padding: 2px 4px;
+            border-radius: 2px;
+        }
+        .border-l-custom {
+            border-left: 2px solid #000;
+        }
+        .border-b-custom {
+            border-bottom: 2px solid #000;
+        }
+        
+        /* Стилі для бічних кнопок */
+        .nav-arrow {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(37, 99, 235, 0.1);
+            color: #2563eb;
+            width: 50px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+            z-index: 50;
+            border-radius: 8px;
+        }
+        .nav-arrow:hover {
+            background: rgba(37, 99, 235, 0.8);
+            color: white;
+        }
+        .nav-arrow.disabled {
+            opacity: 0.1;
+            cursor: not-allowed;
+        }
+        .nav-left { left: 10px; }
+        .nav-right { right: 10px; }
+    </style>
+</head>
+<body class="p-4 md:p-12 flex justify-center items-start min-h-screen">
+
+    <!-- Стрілки навігації -->
+    <div id="prev-btn" class="nav-arrow nav-left disabled">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+        </svg>
+    </div>
+    
+    <div id="next-btn" class="nav-arrow nav-right">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+        </svg>
+    </div>
+
+    <div class="bg-white p-6 md:p-10 shadow-lg border border-gray-200 max-w-4xl w-full relative">
+        <!-- Заголовок -->
+        <h1 class="text-xl font-bold mb-2">Вправа 31 (6)</h1>
+        <p class="text-lg leading-relaxed mb-8">
+            На якій висоті розташований оглядовий майданчик телевізійної вежі, якщо атмосферний тиск біля підніжжя вежі становить 760 мм рт. ст., а на висоті майданчика — 740 мм рт. ст.?
+        </p>
+
+        <!-- Сітка задачі -->
+        <div class="grid grid-cols-12 gap-0">
+            
+            <!-- Ліва частина: Дано -->
+            <div class="col-span-4 pr-4">
+                <h2 class="font-bold text-lg mb-2">Дано:</h2>
+                <div class="text-lg space-y-2">
+                    <div id="step-1" class="step-hidden"><i>p</i><sub>1</sub> = 760 мм рт. ст.</div>
+                    <div id="step-2" class="step-hidden"><i>p</i><sub>2</sub> = 740 мм рт. ст.</div>
+                    <div id="step-3" class="step-hidden">
+                        <div class="border-b-custom w-full my-2"></div>
+                        <i>h</i> — ?
+                    </div>
+                </div>
+            </div>
+
+            <!-- Права частина: Розв'язання -->
+            <div class="col-span-8 border-l-custom pl-6">
+                <h2 class="font-bold text-lg mb-4">Розв'язання</h2>
+                
+                <div class="text-lg mb-6">
+                    <div id="step-4" class="step-hidden flex flex-wrap items-center gap-x-8">
+                        <span>Δ<i>p</i> = <i>p</i><sub>1</sub> – <i>p</i><sub>2</sub></span>
+                        <span id="step-5" class="step-hidden">Δ<i>p</i> = 760 – 740 ≈ 20 (мм рт. ст.)</span>
+                    </div>
+                </div>
+
+                <div id="step-6" class="step-hidden text-lg mb-6 leading-relaxed">
+                    Зміна висоти на <span class="highlight">11 м</span> змінює тиск на <span class="highlight">1 мм рт. ст.</span>,
+                </div>
+                <div id="step-7" class="step-hidden text-lg mb-8 text-center">
+                    а зміна висоти на <span class="font-bold italic">h</span>, м — на <span class="highlight font-bold text-xl">20</span> мм рт. ст.
+                </div>
+
+                <div id="step-8" class="step-hidden text-lg mb-10 flex justify-center">
+                    <div class="flex items-center">
+                        <span class="mr-2"><i>h</i> = </span>
+                        <div class="flex flex-col items-center">
+                            <span class="border-b-custom px-4">11 · 20</span>
+                            <span>1</span>
+                        </div>
+                        <span class="ml-2">= 220 (м)</span>
+                    </div>
+                </div>
+
+                <div id="step-9" class="step-hidden">
+                    <p class="font-bold text-lg border-t pt-4">Відповідь: 220 м</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Індикатор кроків (опціонально) -->
+        <div class="mt-8 text-center text-gray-400 text-xs">
+            Крок <span id="current-step-display">0</span> із 9
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        const totalSteps = 9;
+        
+        const nextBtn = document.getElementById('next-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const stepDisplay = document.getElementById('current-step-display');
+
+        function updateUI() {
+            // Оновлення видимості кроків
+            for (let i = 1; i <= totalSteps; i++) {
+                const el = document.getElementById(`step-${i}`);
+                if (i <= currentStep) {
+                    el.classList.add('step-visible');
+                    el.classList.remove('step-hidden');
+                } else {
+                    el.classList.add('step-hidden');
+                    el.classList.remove('step-visible');
+                }
+            }
+
+            // Оновлення стану кнопок
+            if (currentStep <= 0) {
+                prevBtn.classList.add('disabled');
+            } else {
+                prevBtn.classList.remove('disabled');
+            }
+
+            if (currentStep >= totalSteps) {
+                nextBtn.classList.add('disabled');
+            } else {
+                nextBtn.classList.remove('disabled');
+            }
+
+            stepDisplay.innerText = currentStep;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                updateUI();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 0) {
+                currentStep--;
+                updateUI();
+            }
+        });
+
+        // Додаємо підтримку клавіатури (стрілки)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextBtn.click();
+            if (e.key === 'ArrowLeft') prevBtn.click();
+        });
+    </script>
+</body>
+</html>
