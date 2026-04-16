@@ -11,12 +11,17 @@
             font-family: 'Roboto', 'Times New Roman', serif;
             background-color: #f8f9fa;
             overflow-x: hidden;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
         .step-hidden {
             opacity: 0;
-            transform: translateY(5px);
+            transform: translateY(10px);
             pointer-events: none;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
         }
         .step-visible {
             opacity: 1;
@@ -25,123 +30,142 @@
         }
         .highlight {
             background-color: #fef3c7;
-            padding: 2px 4px;
-            border-radius: 2px;
+            padding: 4px 8px;
+            border-radius: 4px;
         }
         .border-l-custom {
-            border-left: 2px solid #000;
+            border-left: 3px solid #000;
         }
         .border-b-custom {
-            border-bottom: 2px solid #000;
+            border-bottom: 3px solid #000;
         }
         
-        /* Стилі для бічних кнопок */
+        /* Стилі для бічних кнопок навігації */
         .nav-arrow {
             position: fixed;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(37, 99, 235, 0.1);
+            background: rgba(37, 99, 235, 0.15);
             color: #2563eb;
-            width: 50px;
-            height: 80px;
+            width: 70px;
+            height: 120px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s ease;
             user-select: none;
-            z-index: 50;
-            border-radius: 8px;
+            z-index: 100;
+            border-radius: 12px;
         }
         .nav-arrow:hover {
-            background: rgba(37, 99, 235, 0.8);
+            background: rgba(37, 99, 235, 0.9);
             color: white;
+            width: 80px;
         }
         .nav-arrow.disabled {
-            opacity: 0.1;
+            opacity: 0.05;
             cursor: not-allowed;
         }
-        .nav-left { left: 10px; }
-        .nav-right { right: 10px; }
+        .nav-left { left: 20px; }
+        .nav-right { right: 20px; }
+
+        /* Стиль для дробу */
+        .fraction {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+            margin: 0 10px;
+        }
     </style>
 </head>
-<body class="p-4 md:p-12 flex justify-center items-start min-h-screen">
+<body class="p-6 md:p-10">
 
     <!-- Стрілки навігації -->
     <div id="prev-btn" class="nav-arrow nav-left disabled">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-12 h-12">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
         </svg>
     </div>
     
     <div id="next-btn" class="nav-arrow nav-right">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-12 h-12">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
         </svg>
     </div>
 
-    <div class="bg-white p-6 md:p-10 shadow-lg border border-gray-200 max-w-4xl w-full relative">
-        <!-- Заголовок -->
-        <h1 class="text-xl font-bold mb-2">Вправа 31 (6)</h1>
-        <p class="text-lg leading-relaxed mb-8">
-            На якій висоті розташований оглядовий майданчик телевізійної вежі, якщо атмосферний тиск біля підніжжя вежі становить 760 мм рт. ст., а на висоті майданчика — 740 мм рт. ст.?
-        </p>
+    <!-- Основний контейнер, розтягнутий для смарт-дошки -->
+    <div class="bg-white p-8 md:p-16 shadow-2xl border border-gray-100 w-full max-w-[95vw] min-h-[85vh] flex flex-col relative rounded-xl">
+        
+        <!-- Заголовок та умова -->
+        <header class="mb-12">
+            <h1 class="text-3xl font-bold mb-6 text-blue-800">Вправа 31 (6)</h1>
+            <p class="text-2xl md:text-3xl leading-relaxed text-gray-800">
+                На якій висоті розташований оглядовий майданчик телевізійної вежі, якщо атмосферний тиск біля підніжжя вежі становить 760 мм рт. ст., а на висоті майданчика — 740 мм рт. ст.?
+            </p>
+        </header>
 
-        <!-- Сітка задачі -->
-        <div class="grid grid-cols-12 gap-0">
+        <!-- Основний робочий простір -->
+        <div class="grid grid-cols-12 gap-0 flex-grow">
             
             <!-- Ліва частина: Дано -->
-            <div class="col-span-4 pr-4">
-                <h2 class="font-bold text-lg mb-2">Дано:</h2>
-                <div class="text-lg space-y-2">
+            <div class="col-span-4 pr-8 border-r-2 border-gray-100">
+                <h2 class="font-bold text-2xl mb-6 text-gray-700">Дано:</h2>
+                <div class="text-2xl md:text-3xl space-y-6">
                     <div id="step-1" class="step-hidden"><i>p</i><sub>1</sub> = 760 мм рт. ст.</div>
                     <div id="step-2" class="step-hidden"><i>p</i><sub>2</sub> = 740 мм рт. ст.</div>
                     <div id="step-3" class="step-hidden">
-                        <div class="border-b-custom w-full my-2"></div>
-                        <i>h</i> — ?
+                        <div class="border-b-custom w-3/4 my-6"></div>
+                        <span class="font-bold"><i>h</i> — ?</span>
                     </div>
                 </div>
             </div>
 
             <!-- Права частина: Розв'язання -->
-            <div class="col-span-8 border-l-custom pl-6">
-                <h2 class="font-bold text-lg mb-4">Розв'язання</h2>
+            <div class="col-span-8 border-l-custom pl-12">
+                <h2 class="font-bold text-2xl mb-8 text-gray-700">Розв'язання</h2>
                 
-                <div class="text-lg mb-6">
-                    <div id="step-4" class="step-hidden flex flex-wrap items-center gap-x-8">
-                        <span>Δ<i>p</i> = <i>p</i><sub>1</sub> – <i>p</i><sub>2</sub></span>
-                        <span id="step-5" class="step-hidden">Δ<i>p</i> = 760 – 740 ≈ 20 (мм рт. ст.)</span>
+                <div class="text-2xl md:text-3xl mb-10">
+                    <div id="step-4" class="step-hidden flex flex-wrap items-center gap-x-12 mb-8">
+                        <span class="bg-blue-50 px-4 py-2 rounded">Δ<i>p</i> = <i>p</i><sub>1</sub> – <i>p</i><sub>2</sub></span>
+                        <span id="step-5" class="step-hidden">Δ<i>p</i> = 760 – 740 = 20 (мм рт. ст.)</span>
                     </div>
                 </div>
 
-                <div id="step-6" class="step-hidden text-lg mb-6 leading-relaxed">
-                    Зміна висоти на <span class="highlight">11 м</span> змінює тиск на <span class="highlight">1 мм рт. ст.</span>,
+                <div id="step-6" class="step-hidden text-2xl md:text-3xl mb-8 leading-relaxed">
+                    Зміна висоти на <span class="highlight font-bold">11 м</span> змінює тиск на <span class="highlight font-bold">1 мм рт. ст.</span>,
                 </div>
-                <div id="step-7" class="step-hidden text-lg mb-8 text-center">
-                    а зміна висоти на <span class="font-bold italic">h</span>, м — на <span class="highlight font-bold text-xl">20</span> мм рт. ст.
+                
+                <div id="step-7" class="step-hidden text-2xl md:text-3xl mb-12">
+                    а зміна висоти на <span class="italic text-blue-600">h</span> (м) відповідає зміні тиску на <span class="highlight font-bold text-blue-700">20</span> мм рт. ст.
                 </div>
 
-                <div id="step-8" class="step-hidden text-lg mb-10 flex justify-center">
-                    <div class="flex items-center">
-                        <span class="mr-2"><i>h</i> = </span>
-                        <div class="flex flex-col items-center">
-                            <span class="border-b-custom px-4">11 · 20</span>
-                            <span>1</span>
-                        </div>
-                        <span class="ml-2">= 220 (м)</span>
+                <div id="step-8" class="step-hidden text-3xl md:text-4xl mb-12 flex items-center justify-start bg-gray-50 p-8 rounded-xl w-fit">
+                    <span><i>h</i> = </span>
+                    <div class="fraction">
+                        <span class="border-b-custom px-6 pb-1">11 · 20</span>
+                        <span class="pt-1">1</span>
                     </div>
+                    <span class="ml-4 font-bold text-green-700">= 220 (м)</span>
                 </div>
 
-                <div id="step-9" class="step-hidden">
-                    <p class="font-bold text-lg border-t pt-4">Відповідь: 220 м</p>
+                <div id="step-9" class="step-hidden mt-auto">
+                    <div class="border-t-4 border-blue-600 pt-6">
+                        <p class="font-bold text-3xl text-blue-900">Відповідь: 220 м</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Індикатор кроків (опціонально) -->
-        <div class="mt-8 text-center text-gray-400 text-xs">
-            Крок <span id="current-step-display">0</span> із 9
-        </div>
+        <!-- Індикатор прогресу внизу -->
+        <footer class="mt-10 pt-6 border-t border-gray-100 flex justify-between items-center text-gray-400">
+            <span class="text-sm uppercase tracking-widest">Кроки розв'язання</span>
+            <div class="text-lg font-medium">
+                Крок <span id="current-step-display" class="text-blue-600 text-2xl">0</span> із 9
+            </div>
+            <span class="text-sm">Використовуйте стрілки або клавіатуру</span>
+        </footer>
     </div>
 
     <script>
@@ -156,27 +180,20 @@
             // Оновлення видимості кроків
             for (let i = 1; i <= totalSteps; i++) {
                 const el = document.getElementById(`step-${i}`);
-                if (i <= currentStep) {
-                    el.classList.add('step-visible');
-                    el.classList.remove('step-hidden');
-                } else {
-                    el.classList.add('step-hidden');
-                    el.classList.remove('step-visible');
+                if (el) {
+                    if (i <= currentStep) {
+                        el.classList.add('step-visible');
+                        el.classList.remove('step-hidden');
+                    } else {
+                        el.classList.add('step-hidden');
+                        el.classList.remove('step-visible');
+                    }
                 }
             }
 
             // Оновлення стану кнопок
-            if (currentStep <= 0) {
-                prevBtn.classList.add('disabled');
-            } else {
-                prevBtn.classList.remove('disabled');
-            }
-
-            if (currentStep >= totalSteps) {
-                nextBtn.classList.add('disabled');
-            } else {
-                nextBtn.classList.remove('disabled');
-            }
+            prevBtn.classList.toggle('disabled', currentStep <= 0);
+            nextBtn.classList.toggle('disabled', currentStep >= totalSteps);
 
             stepDisplay.innerText = currentStep;
         }
@@ -195,11 +212,20 @@
             }
         });
 
-        // Додаємо підтримку клавіатури (стрілки)
+        // Додаємо підтримку клавіатури (стрілки та пробіл)
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') nextBtn.click();
-            if (e.key === 'ArrowLeft') prevBtn.click();
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextBtn.click();
+            }
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevBtn.click();
+            }
         });
+
+        // Початкове оновлення
+        updateUI();
     </script>
 </body>
 </html>
